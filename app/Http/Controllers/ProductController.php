@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Product;
+use App\Models\Order;
 
 class ProductController extends Controller
 {
     public function importProducts()
     {
-        return view('admin.import_products');
+        $total_product= Product::all()->count();
+        $total_order= Order::all()->count();
+        return view('admin.import_products',compact('total_product','total_order'));
     }
 
     public function uploadProducts (Request $request)
