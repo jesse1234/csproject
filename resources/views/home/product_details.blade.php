@@ -2,7 +2,7 @@
 <html>
    <head>
       <!-- Basic -->
-      <base href='/public'>
+      
       <meta charset="utf-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <!-- Mobile Metas -->
@@ -14,13 +14,13 @@
       <link rel="shortcut icon" href="images/favicon.png" type="">
       <title>Famms - Fashion HTML Template</title>
       <!-- bootstrap core css -->
-      <link rel="stylesheet" type="text/css" href="home/css/bootstrap.css" />
+      <link rel="stylesheet" type="text/css" href="{{asset('home/css/bootstrap.css')}}" />
       <!-- font awesome style -->
-      <link href="home/css/font-awesome.min.css" rel="stylesheet" />
+      <link href="{{asset('home/css/font-awesome.min.css')}}" rel="stylesheet" />
       <!-- Custom styles for this template -->
-      <link href="home/css/style.css" rel="stylesheet" />
+      <link href="{{asset('home/css/style.css')}}" rel="stylesheet" />
       <!-- responsive style -->
-      <link href="home/css/responsive.css" rel="stylesheet" />
+      <link href="{{asset('home/css/responsive.css')}}" rel="stylesheet" />
       <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
 </head>
@@ -35,7 +35,7 @@
  
  <!-- Left Column /  Image -->
  <div id="aSide">
- <model-viewer src="product/{{$product->image_3d}}" alt="Yoruba Mask" auto-rotate camera-controls ar ios-src="product/{{$product->image_3d}}" class='img'></model-viewer>   
+ <model-viewer src="/product/{{$product->image_3d}}" alt="Yoruba Mask" auto-rotate camera-controls ar ios-src="product/{{$product->image_3d}}" class='img'></model-viewer>   
  </div>
 
 
@@ -82,4 +82,3 @@
       <script src="home/js/custom.js"></script>
    </body>
 </html>
-

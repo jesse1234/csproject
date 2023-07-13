@@ -187,6 +187,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,7 +215,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Mpesa'=> \Safaricom\Mpesa\MpesaServiceProvider::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-    
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         ])->toArray(),
 
 ];

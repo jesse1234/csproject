@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Vendor;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {

@@ -1,66 +1,59 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+3DCommerce Website
+Description
+Welcome to the 3DCommerce Website repository! This repository contains the source code and assets for a full-fledged e-commerce website specializing in 3D products. The website allows users to explore and purchase various 3D models, animations, textures, and other digital assets. It utilizes Node.js as the backend technology, HTML, CSS, and JavaScript for the frontend, XAMPP as the database, Laravel Breeze for authentication scaffolding, and MPESA as the payment gateway.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Features
+Product Catalog: Browse a wide range of 3D models, animations, textures, and more, organized into different categories for easy navigation.
+Search Functionality: Use the search bar to find specific products by name, category, or keywords.
+User Accounts: Create an account to save favorite products, track order history, and manage personal information.
+Shopping Cart: Add desired products to the shopping cart, modify quantities, and proceed to checkout.
+Secure Payments: Enjoy a secure and seamless payment process using the MPESA payment gateway.
+User Reviews and Ratings: Read and leave reviews and ratings for products, helping others make informed decisions.
+Responsive Design: Experience a visually appealing and user-friendly interface that adapts to various screen sizes and devices.
+Installation
+To run the 3DCommerce Website locally, follow these steps:
 
-## About Laravel
+Clone the repository: git clone https://github.com/your-username/3dcommerce-website.git
+Set up the backend:
+Install Node.js and npm.
+Navigate to the backend directory: cd 3dcommerce-website/backend
+Install the dependencies: npm install
+Configure the database connection in the .env file.
+Start the backend server: npm run start
+Set up the frontend:
+Install XAMPP and start the Apache and MySQL services.
+Place the frontend files in the appropriate directory (e.g., htdocs).
+Set up the database:
+Open PHPMyAdmin (usually accessible at http://localhost/phpmyadmin).
+Create a new database and import the provided SQL dump file.
+Set up authentication:
+Install Laravel Breeze: composer require laravel/breeze --dev
+Generate authentication scaffolding: php artisan breeze:install
+Install dependencies: npm install && npm run dev
+Configure the payment gateway:
+Sign up for an MPESA account and obtain the required API credentials.
+Configure the MPESA credentials in the appropriate files.
+Open your web browser and visit http://localhost to access the website.
+Technologies Used
+The 3DCommerce Website is built using the following technologies and frameworks:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Frontend: HTML, CSS, JavaScript
+Backend: Node.js
+Database: XAMPP (MySQL)
+Authentication: Laravel Breeze
+Payment Gateway: MPESA
+Contributing
+We welcome contributions to the 3DCommerce Website project! If you'd like to contribute, please follow these guidelines:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Fork the repository and create a new branch.
+Make your changes and ensure the code is properly tested.
+Submit a pull request describing your changes and their purpose.
+Please note that all contributions are subject to review and acceptance by the project maintainers.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+License
+The 3DCommerce Website is released under the MIT License. Feel free to modify and distribute the codebase, respecting the terms of the license.
 
-## Learning Laravel
+Contact
+If you have any questions, suggestions, or feedback, please don't hesitate to contact us at support@3dcommercewebsite.com. We're always happy to hear from you!
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Thank you for visiting the 3DCommerce Website repository. Happy exploring and shopping for 3D products!
