@@ -11,15 +11,15 @@
       <meta name="description" content="" />
       <meta name="author" content="" />
       <link rel="shortcut icon" href="images/favicon.png" type="">
-      <title>Artifacts Website</title>
+      <title>Famms - Fashion HTML Template</title>
       <!-- bootstrap core css -->
-      <link rel="stylesheet" type="text/css" href="home/css/bootstrap.css" />
+      <link rel="stylesheet" type="text/css" href="{{asset('home/css/bootstrap.css')}}" />
       <!-- font awesome style -->
-      <link href="home/css/font-awesome.min.css" rel="stylesheet" />
+      <link href="{{asset('home/css/font-awesome.min.css')}}" rel="stylesheet" />
       <!-- Custom styles for this template -->
-      <link href="home/css/style.css" rel="stylesheet" />
+      <link href="{{asset('home/css/style.css')}}" rel="stylesheet" />
       <!-- responsive style -->
-      <link href="home/css/responsive.css" rel="stylesheet" />
+      <link href="{{asset('home/css/responsive.css')}}" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
    </head>
