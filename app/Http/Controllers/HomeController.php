@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\Order;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
 {
@@ -34,9 +35,10 @@ class HomeController extends Controller
     public function product_details($id)
     {
         $product = Product::find($id);
+        $user= auth()->user();
+        $count=Cart::where('email',$user->email)->count();
 
-
-        return view('home.product_details',compact('product'));
+        return view('home.product_details',compact('product','count'));
     }
      
     public function add_to_cart(Request $request,$id)
@@ -70,7 +72,9 @@ class HomeController extends Controller
             $cart->quantity=$request->quantity;
             $cart->save();
 
-            return redirect()->back()->with('message','Item has been added to cart');
+            Alert::success('Product added successfully', 'Product is added into the cart');
+
+            return redirect()->back();
         }
         else
         {
@@ -114,4 +118,56 @@ class HomeController extends Controller
         // Redirect back to the cart page or any other appropriate page
         return redirect()->back()->with('success', 'Cart items updated successfully');
     }
+
+    public function show_order()
+    {
+        if(Auth::id())
+        {
+            $user= Auth::user();
+            $user_id = $user->id;
+            $order= Order::where('user_id','=',$user_id)->get();
+
+
+            $count=Cart::where('email',$user->email)->count();
+            return view('home.order',compact('count','order'));
+        }
+        else{
+            return redirect('login');
+    }
+}
+
+public function cancel_order($id)
+{
+    $order = Order::find($id);
+    $order->delivery_status='Cancelled';
+    $order->save();
+    return redirect()->back()->with('success','Order has been cancelled');
+}
+
+public function product_search(Request $request)
+{
+    $user= auth()->user();
+    $count=Cart::where('email',$user->email)->count();
+    $search_text = $request->search;
+    $product = Product::where('title','LIKE',"%$search_text%")->paginate(3);
+    return view('home.userpage',compact('product','count'));
+}
+
+public function product()
+{
+    $user= auth()->user();
+    $count=Cart::where('email',$user->email)->count();
+    $product=Product::paginate(3);
+    return view('home.all_product',compact('product','count'));
+
+}
+
+public function search_product(Request $request)
+{
+    $user= auth()->user();
+    $count=Cart::where('email',$user->email)->count();
+    $search_text = $request->search;
+    $product = Product::where('title','LIKE',"%$search_text%")->paginate(3);
+    return view('home.all_product',compact('product','count'));
+}
 }
