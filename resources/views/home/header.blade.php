@@ -1,7 +1,7 @@
 <header class="header_section">
             <div class="container">
                <nav class="navbar navbar-expand-lg custom_nav-container ">
-                  <a class="navbar-brand" href="{{url('/dashboard')}}"><img width="250" src="images/logo.png" alt="#" /></a>
+                  <a class="navbar-brand" href="{{url('/dashboard')}}"><img width="250" src="/images/logo.png" alt="#" /></a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class=""> </span>
                   </button>
@@ -18,7 +18,7 @@
                            </ul>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="product.html">Products</a>
+                           <a class="nav-link" href="{{url('products')}}">Products</a>
                         </li>
                         <li class="nav-item">
                            <a class="nav-link" href="blog_list.html">Blog</a>
@@ -36,6 +36,9 @@
                         <li class="nav-item">
                         <li class="nav-item">
                            <a class="btn btn-primary" href="{{route('cart')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Cart<span class="badge badge-pill badge-danger">{{$count}}</span></a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="btn btn-secondary" href="{{route('order')}}"></i>Orders<span class="badge badge-pill badge-danger">{{$count}}</span></a>
                         </li>
                         <x-app-layout>
     
