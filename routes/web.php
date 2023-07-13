@@ -57,7 +57,7 @@ Route::prefix('superadmin')->group(function(){
     Route::get('/dashboard', [SuperAdminController::class,'dashboard'])->name('superadmin.dashboard')->middleware('superadmin');
     Route::get('/logout', [SuperAdminController::class,'Adminlogout'])->name('superadmin.logout')->middleware('superadmin');
     Route::get('/password/forgot', [SuperAdminController::class,'showForgotForm'])->name('forgot.password.form');
-    
+    Route::get('/users',[SuperAdminController::class,'show_users_table'])->name('user');
     Route::post('/password/forgot/link', [SuperAdminController::class,'sendResetLink'])->name('password.link');
     
     Route::get('/password/forgot/{token}', [SuperAdminController::class,'showResetForm'])->name('reset.password.form');
@@ -65,10 +65,14 @@ Route::prefix('superadmin')->group(function(){
     Route::get('/vendor_approve', [SuperAdminController::class,'vendor_approve'])->name('vendor.approve');
     Route::post('vendors/approve/{id}', [SuperAdminController::class,'approve'])->name('vendors.approve');
 
+    Route::get('/user_chart',[SuperAdminController::class,'user_chart']);
 });
 
 
     Route::get('/admin/vendor_details', [AdminController::class,'vendor_details']);
+
+    Route::get('/admin/vendor_charts', [AdminController::class,'vendor_chart'])->name('admin.charts');
+    
     Route::post('vendor_details', [AdminController::class,'vendor_input'])->name('vendor.details');
     Route::get('/admin/import_details', [ProductController::class, 'importProducts'])->name('import');
     Route::post('/import-products', [ProductController::class,'uploadProducts'])->name('import.products');
@@ -78,7 +82,7 @@ Route::prefix('superadmin')->group(function(){
     Route::get('/update_product/{id}',[AdminController::class,'update_product']);
     Route::post('/update_product_confirm/{id}',[AdminController::class,'update_product_confirm']);
     
-    Route::get('/show_order',[AdminController::class,'show_order']);
+    Route::get('/show_orders',[AdminController::class,'show_order_table']);
     Route::get('/delivered/{id}', [AdminController::class,'delivered']);
     Route::get('/print_pdf/{id}', [AdminController::class,'print_pdf']);
     Route::get('/send_email/{id}', [AdminController::class,'send_email']);
@@ -87,6 +91,12 @@ Route::prefix('superadmin')->group(function(){
 
 
     Route::get('/product_details/{id}',[HomeController::class,'product_details']);
+    Route::get('/show_order',[HomeController::class,'show_order'])->name('order');
+    Route::get('/cancel_order/{id}',[HomeController::class,'cancel_order']);
+    Route::get('/product_search',[HomeController::class,'product_search']);
+    Route::get('/products',[HomeController::class,'product']);
+    Route::get('/search_product',[HomeController::class,'search_product']);
+
 
     Route::post('/add_to_cart/{id}', [HomeController::class, 'add_to_cart'])->name('add_to_cart');
     Route::get('cart', [HomeController::class, 'cart'])->name('cart');
@@ -120,4 +130,3 @@ require __DIR__ . '/admin_auth.php';
 
 
 //Route::get('gate', [AuthorizationController::class, 'index'])->name('gate')->middleware(['can:isAdmin']);
-
