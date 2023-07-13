@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Vendor Panel</span>
+      <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +13,7 @@
           <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-         <a href="#" class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
+         <a href="#" class="d-block">{{ Auth::guard('superadmin')->user()->name }}</a>
         </div>
       </div>
 
@@ -35,22 +35,14 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="{{route('admin.dashboard')}}" class="nav-link active">
+            <a href="{{route('superadmin.dashboard')}}" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Categories
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
+          
           
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -62,27 +54,9 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+                <a href="{{url('superadmin/user_chart')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/uplot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>uPlot</p>
+                  <p>Admin Charts</p>
                 </a>
               </li>
             </ul>
@@ -104,9 +78,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/admin/vendor_details') }}" class="nav-link">
+                <a href="{{ url('approve') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Vendor Details</p>
+                  <p>Vendor</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -116,9 +90,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('import') }}" class="nav-link">
+                <a href="pages/forms/editors.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Bulk Upload Products</p>
+                  <p>Editors</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -139,15 +113,17 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('/show_product') }}" class="nav-link">
+                <a href="{{ route('vendor.approve') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Product Table</p>
+                  <p>Vendor Table</p>
+                  <span class="badge badge-info right">{{$vendor_count}}</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/show_order') }}" class="nav-link">
+                <a href="{{ route('user') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Orders Table</p>
+                  <p>User Table</p>
+                  <span class="badge badge-info right">{{$user_count}}</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -540,10 +516,8 @@
             </a>
           </li>
           <li class="nav-item">
-          <form action="{{ route('admin.logout') }}" method="POST">
-        @csrf
-        <button class="btn btn-block btn-danger">Logout</button>
-    </form>
+            <a href="{{route('superadmin.logout')}}" class="">
+          <button type="button" class="btn btn-block btn-danger">Logout</button>
           </a>
         </ul>
       </nav>
