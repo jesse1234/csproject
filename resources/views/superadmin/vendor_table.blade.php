@@ -34,11 +34,11 @@
   </div>
 
   <!-- Navbar -->
-  @include('admin.navbar')
+  @include('superadmin.navbar')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('admin.sidebar')
+  @include('superadmin.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -78,7 +78,7 @@
                         <td>
                           
                           @if ($vendors->image)
-                    <img src="{{ asset('images/' . $vendors->image) }}" alt="Vendor Image" width="100">
+                    <img src="{{ asset('/product/' . $vendors->image) }}" alt="Vendor Image" width="100">
                 @else
                     No Image
                 @endif
@@ -100,7 +100,7 @@
                 </table>
               </div>
   <!-- /.content-wrapper -->
-  @include('admin.footer')
+  @include('superadmin.footer')
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
