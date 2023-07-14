@@ -22,25 +22,19 @@ Enjoy a secure and seamless payment process using the MPESA payment gateway.
 ## Installation
 
  1. clone the repository ( https://github.com/jesse1234/csproject )
- 2. Setup the backend in cmd ( https://nodejs.org )
+ 2. Setup the backend in cmd and Place the files in the appropriate directory preferably where you saved Xampp program files ( C:\xampp\htdocs)
 ```bash
+   cd my_project
    npm install -g npm
-```
- 3. From your terminal of choice e.g. Command Prompt. Run the codes below
-```bash
-  cd my-project
   npm install && npm run build
 ```
-4. Configure the database connection in the .env file where it says DB_DATABASE = . 
- 5. Start the backend server: npm run start Set up the frontend: 
- 6. Install XAMPP and start the Apache and MySQL services.
+ 4. Configure the database connection in the .env file where it says DB_DATABASE = . 
+ 5. Install XAMPP and start the Apache and MySQL services.
     ```bash
     curl -O https://www.apachefriends.org/xampp-files/{version}/xampp-{version}-installer.dmg
     ```
- 7. Place the frontend files in the appropriate directory preferably where you saved Xampp program files ( C:\xampp\htdocs). Set up the database: Open PHPMyAdmin (usually accessible at http://localhost/phpmyadmin). Create a new database and import the provided SQL dump file. 
- 8. Set up authentication: Install Laravel Breeze: composer require laravel/breeze --dev Generate authentication scaffolding: php artisan breeze:install Install dependencies: npm install && npm run dev ( https://laravel.com/docs/10.x/starter-kits )
- 9. Configure the payment gateway: Sign up for an MPESA account and obtain the required API credentials. Configure the MPESA credentials in the appropriate files.
-    
+ 6. Set up the database: Open PHPMyAdmin (usually accessible at http://localhost/phpmyadmin). Create a new database and import the provided SQL dump file.
+
 ## Technologies used
  - **Frontend**: HTML, CSS, JavaScript 
  - **Backend**: Node.js 
