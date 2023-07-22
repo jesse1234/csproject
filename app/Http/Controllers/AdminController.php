@@ -11,19 +11,23 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Vendor;
 use App\Models\Order;
+use App\Models\OrderItems;
 use App\Models\User;
+use App\Models\Transaction;
+use App\Models\StkRequest;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Notification;
 use App\Notifications\EmailNotification;
 use App\Charts\VendorChart;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class AdminController extends Controller
 {
     public function view_category()
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
             $total_product= Product::all()->count();
             $total_order= Order::all()->count();
@@ -32,13 +36,13 @@ class AdminController extends Controller
         }
         else
         {
-            return redirect()->route('admin.login')->with('info', "Please login first");
+            return redirect()->back()->with('success', "Please wait for account approval by admin");
         };
     }
 
     public function add_category(Request $request)
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
 
             $data = new Category;
@@ -55,10 +59,12 @@ class AdminController extends Controller
 
     public function delete_category($id)
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
             $data = category::find($id);
             $data->delete();
+
+            Alert::warning('Are you sure you want to delete this category');
             return redirect()->back()->with('message','Category deleted successfully');
             
         }
@@ -70,26 +76,27 @@ class AdminController extends Controller
     }
 
     public function view_product()
-    {
-        if(Auth::guard('admin')->id())
-        {
-            $total_product= Product::all()->count();
-            $total_order= Order::all()->count();
-            return view('admin.add_product',compact('total_product','total_order'));
-            
-        }
-        else
-        {
-            return redirect()->route('admin.login')->with('info', "Please login first");
-        };
-       
+{
+    if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->status == 'approved') {
+        $vendorId = Auth::guard('admin')->user()->id;
+        $products = Product::where('vendor_id', $vendorId)->get();
+        $total_product = $products->count();
+        $total_order = Order::all()->count();
+        return view('admin.add_product', compact('total_product', 'total_order', 'products'));
+    } else {
+        return redirect()->route('admin.login')->with('info', "Please login first");
     }
+}
 
     public function add_product(Request $request)
     {
 
         if(Auth::guard('admin')->id())
         {
+            $vendor= Auth::guard('admin')->user();
+            $vendors = $vendor->id;
+
+
             $product = new Product;
             $product->title = $request->title;
             $product->description = $request->description;
@@ -98,17 +105,18 @@ class AdminController extends Controller
             $imagename=time().'.'.$image->getClientOriginalExtension();
             $request->product_image->move('product',$imagename);
     
-            $_3d_image = $request->_3d_image;
-            $image_name=time().'.'.$_3d_image->getClientOriginalExtension();
-            $request->_3d_image->move('product',$image_name);
+            $image_3d = $request->image_3d;
+            $image_name=time().'.'.$image_3d->getClientOriginalExtension();
+            $request->image_3d->move('product',$image_name);
     
             $product->image= $imagename;
-            $product->_3d_image = $image_name;
+            $product->image_3d = $image_name;
             
             $product->category_id = $request->category_id;
-            $product->quantity = $request->quantity;
+            $product->stock = $request->stock;
             $product->price = $request->price;
             $product->discount_price = $request->discount_price;
+            $product->vendor_id = $vendors;
         
             $product->save();
             return redirect()->back()->with('message','Product added successfully');
@@ -124,11 +132,12 @@ class AdminController extends Controller
     public function show_product()
     {
 
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
             $total_product= Product::all()->count();
             $total_order= Order::all()->count();
-            $product = Product::all();
+            $vendorId = Auth::guard('admin')->user()->id;
+            $product = Product::where('vendor_id', $vendorId)->get();
         return view('admin.show_product', compact('product','total_product','total_order'));
             
         }
@@ -140,10 +149,13 @@ class AdminController extends Controller
 
     public function delete_product($id)
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
+            Alert::warning('Are you sure you want to delete this product');
             $product = Product::find($id);
+            
             $product->delete();
+            
             return redirect()->back()->with('message','Product deleted successfully');
                 
         }
@@ -153,15 +165,34 @@ class AdminController extends Controller
         };
         }
 
+
+        public function delete_order($id)
+        {
+            if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
+            {
+                
+                $order = Order::find($id);
+                
+                $order->delete();
+                Alert::warning('Are you sure you want to delete this order');
+                return redirect()->back()->with('message','Order deleted successfully');
+                    
+            }
+            else
+            {
+                return redirect()->route('admin.login')->with('info', "Please login first");
+            };
+            }
+
     public function update_product($id)
     {
 
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
             $total_product= Product::all()->count();
             $total_order= Order::all()->count();
             $product = Product::find($id);
-            return view('admin.update_product',compact('product','total_price','total_order'));    
+            return view('admin.update_product',compact('product','total_product','total_order'));    
         }
         else
         {
@@ -171,7 +202,7 @@ class AdminController extends Controller
 
     public function update_product_confirm(Request $request,$id)
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
             $product = Product::find($id);
             $product->title = $request->title;
@@ -206,7 +237,7 @@ class AdminController extends Controller
 
     public function vendor_details()
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id() )
         {
             
             return view('admin.vendor_details');
@@ -259,7 +290,7 @@ class AdminController extends Controller
 
     public function show_order_table()
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
             $total_product= Product::all()->count();
             $total_order= Order::all()->count();
@@ -276,7 +307,7 @@ class AdminController extends Controller
 
     public function delivered($id)
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id() )
         {
             $order= Order::find($id);
             $order->delivery_status='Delivered';
@@ -308,8 +339,10 @@ class AdminController extends Controller
     {
         if(Auth::guard('admin')->id())
         {
+            $total_product= Product::all()->count();
+            $total_order = Order::all()->count();
             $order = Order::find($id);
-            return view('admin.email_info',compact('order'));    
+            return view('admin.email_info',compact('order','total_product','total_order'));    
         }
         else
         {
@@ -318,38 +351,39 @@ class AdminController extends Controller
     }
 
     public function send_user_email(Request $request, $id)
+{
+    if(Auth::guard('admin')->id())
     {
+        $order=Order::find($id);
+        $details=[
+            'greeting' => $request->greeting,
+            'firstline' => $request->firstline,
+            'body' => $request->body,
+            'file' => $request->file('attachment')->getPathname(), // Get the file attachment from the request
+            'url' => $request->url,
+            'button' => $request->button,
+            'lastline' => $request->lastline,
+        ];
+        Notification::send($order, new EmailNotification($details));
 
-        if(Auth::guard('admin')->id())
-        {
-            $order=Order::find($id);
-            $details=[
-                'greeting' => $request->greeting,
-                'firstline' => $request->firstline,
-                'body' => $request->body,
-                'file' => $request->file,
-                'url' => $request->url,
-                'button' => $request->button,
-                'lastline' => $request->lastline,
-    
-            ];
-            Notification::send($order,new EmailNotification($details));
-    
-            return redirect()->back()->with("success", 'Email sent successfully');
-                }
-        else
-        {
-            return redirect()->route('admin.login')->with('info', "Please login first");
-        };
-        }
+        return redirect()->back()->with("success", 'Email sent successfully');
+    }
+    else
+    {
+        return redirect()->route('admin.login')->with('info', "Please login first");
+    }
+}
+
 
     public function searchdata(Request $request)
     {
-        if(Auth::guard('admin')->id())
+        if(Auth::guard('admin')->id()  && Auth::guard('admin')->user()->status == 'approved')
         {
+            $total_product= Product::all()->count();
+            $total_order= Order::all()->count();
         $searchText = $request->search;
         $order = Order::where('name' ,'LIKE',"%$searchText%")->orWhere('email' ,'LIKE',"%$searchText%")->orWhere('product_title' ,'LIKE',"%$searchText%")->orWhere('region' ,'LIKE',"%$searchText%")->orWhere('address' ,'LIKE',"%$searchText%")->get();
-        return view('admin.orders_table',compact('order'));
+        return view('admin.orders_table',compact('order','total_product','total_order'));
         }
         else
         {
@@ -412,4 +446,90 @@ class AdminController extends Controller
 
     return view('admin.detail_charts',compact('chart','user_chart','status_chart','total_chart','product_chart','discount_chart','total_product','total_order'));
 }
+
+public function transactions_table()
+{
+    $total_product= Product::all()->count();
+    $total_order= Order::all()->count();
+    $transaction = Transaction::all();
+    return view('admin.transactions',compact('total_product','total_order','transaction'));
+}
+
+public function stk_table()
+{
+    $total_product= Product::all()->count();
+    $total_order= Order::all()->count();
+    $stk = StkRequest::all();
+    return view('admin.stk_table',compact('total_product','total_order','stk'));
+}
+
+
+public function showForgotForm()
+    {
+        return view('admin.forgot');
+    }
+
+public function sendResetLink(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email|exists:vendors,email'
+    ]);
+
+    $token = Str::random(64);
+    \DB::table('password_resets')->insert([
+        'email' => $request->email,
+        'token' => $token,
+        'created_at' => Carbon::now(),
+    
+    ]);
+
+    $action_link = route('admin.reset.password.form',['token' => $token, 'email' => $request->email]);
+    $body = "We have received a request to reset the password for your account associated with".$request->email.". Click the link below to reset your password";
+    
+    \Mail::send('email-forgot',['action_link' => $action_link, 'body' => $body], function($message) use ($request){
+        $message->from('jesse.kamau@strathmore.edu','Website Name');
+        $message->to($request->email,'Your name')
+                ->subject('Reset Password');
+    });
+
+    return back()->with('success','We have emailed the link to your account');
+}
+
+public function showResetForm(Request $request, $token = null)
+{
+    return view('admin.reset')->with(['token' => $token, 'email' => $request->email]);
+}
+
+public function resetPassword(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email|exists:vendors,email',
+        'password' => 'required|min:8|confirmed',
+        'password_confirmation' => 'required'
+    ]);
+
+    $check_token = \DB::table('password_resets')->where([
+        'email' => $request->email,
+        'token' => $request->token,
+    ])->first();
+
+    if(!$check_token)
+    {
+        return back()->withInput()->with('fail', 'Invalid token');
+    }
+    else{
+        Vendor::where('email',$request->email)->update([
+            'password' => \Hash::make($request->password)
+        ]);
+
+        \DB::table('password_resets')->where([
+            'email' => $request->email
+        ])->delete();
+
+        return redirect()->route('admin.login')->with('message','Your password has successfully changed');
+    }
+
+
+}
+
 }

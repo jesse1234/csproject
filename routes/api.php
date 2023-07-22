@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Auth\JWTAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MpesaController;
+use App\Http\Controllers\M_PesaController;
 
 
 
@@ -56,4 +56,4 @@ Route::controller(JWTAuthController::class)->group(function () {
 // Route::post('v1/access/token', [MpesaController::class,'generateAccesToken']);
 // Route::post('v1/hlab/stk/push', [MpesaController::class,'stkPush']);
 
-Route::post('/mpesa/stkpush/response', [MpesaController::class, 'resData'])->name('stkpush.response');
+Route::post('/mpesa/stkpush/response', [M_PesaController::class, 'resData'])->name('stkpush.response');

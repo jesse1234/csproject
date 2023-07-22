@@ -37,44 +37,45 @@
   <div class="content-wrapper">
     <h1 style='text-align:center; font-size:25px;'>Send Email to {{$order->email}}</h1>
     
-    <form action="{{url('send_user_email',$order->id)}}" method='POST'>
-        @csrf
-    <div style='padding-left:35%; padding-top:30px'>
-        <label for="" class='email-label' style='color:black;'>Email Greeting</label>
-        <input type="text" name='greeting'>
+    <form action="{{ url('send_user_email', $order->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div style="padding-left: 35%; padding-top: 30px">
+        <label for="greeting" class="email-label" style="color: black;">Email Greeting</label>
+        <input type="text" name="greeting">
     </div>
 
-    <div style='padding-left:35%; padding-top:30px'>
-        <label for="" class='email-label' style='color:black;'>Email First Line</label>
-        <input type="text" name='firstline'>
+    <div style="padding-left: 35%; padding-top: 30px">
+        <label for="firstline" class="email-label" style="color: black;">Email First Line</label>
+        <input type="text" name="firstline">
     </div>
 
-    <div style='padding-left:35%; padding-top:30px'>
-        <label for="" class='email-label' style='color:black;'>Email Body</label>
-        <input type="text" name='body'>
+    <div style="padding-left: 35%; padding-top: 30px">
+        <label for="body" class="email-label" style="color: black;">Email Body</label>
+        <input type="text" name="body">
     </div>
 
-    <div style='padding-left:35%; padding-top:30px'>
-        <label for="" class='email-label' style='color:black;'>Email file</label>
+    <div style="padding-left: 35%; padding-top: 30px">
+        <label for="file" class="email-label" style="color: black;">Email File</label>
         <br>
-        <input type="file" name='file'>
+        <input type="file" name="attachment">
     </div>
 
-    <div style='padding-left:35%; padding-top:30px'>
-        <label for="" class='email-label' style='color:black;'>Email Body</label>
-        <input type="text" name='url'>
+    <div style="padding-left: 35%; padding-top: 30px">
+        <label for="url" class="email-label" style="color: black;">Email URL</label>
+        <input type="text" name="url">
     </div>
 
-    <div style='padding-left:35%; padding-top:30px'>
-        <label for="" class='email-label' style='color:black;'>Email Last Line</label>
+    <div style="padding-left: 35%; padding-top: 30px">
+        <label for="lastline" class="email-label" style="color: black;">Email Last Line</label>
         <br>
-        <input type="text" name='lastline'>
+        <input type="text" name="lastline">
     </div>
 
-    <div style='padding-left:35%; padding-top:30px'>
-        <input type="submit" name='body' value='Send Email' class='btn btn-primary'>
+    <div style="padding-left: 35%; padding-top: 30px">
+        <input type="submit" value="Send Email" class="btn btn-primary">
     </div>
-    </form>
+</form>
+
 
   </div>
 

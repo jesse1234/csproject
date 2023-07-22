@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Register</title>
+    <style>
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+   /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
+</head>
+<body>
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
@@ -34,6 +73,10 @@
                                 type="password"
                                 name="password"
                                 required autocomplete="new-password" />
+                                <div class="tooltip">
+<i class="fa fa-question-circle" aria-hidden="true"></i>
+  <span class="tooltiptext">Your password should have more than 8 characters, at least one symbol and one number</span>
+</div>
             </div>
 
             <!-- Confirm Password -->
@@ -57,3 +100,6 @@
         </form>
     </x-auth-card>
 </x-guest-layout>
+
+</body>
+</html>

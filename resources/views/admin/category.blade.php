@@ -17,6 +17,8 @@
         padding-bottom:40px;
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -25,7 +27,7 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
   </div>
-
+  @include('sweetalert::alert')
   <!-- Navbar -->
   @include('admin.navbar')
   <!-- /.navbar -->
@@ -45,7 +47,7 @@
   
     <h2 class='h2_font'>Add Category</h2>
 
-    <form action="{{ url('/add_category')}}" method="POST">
+    <form action="{{ url('/admin/add_category')}}" method="POST">
         @csrf
                 <div class="card-body">
                   <div class="form-group">
@@ -81,8 +83,7 @@
                       <td>{{$data->category_name}}</td>
                       <td>{{$data->created_at}}</td>
                       <td>{{$data->updated_at}}</td>
-                      <td><a href=""><button type='button' class='btn btn-block btn-info tn-sm'>Edit</button></a></td>
-                      <td><a onclick = "return confirm('Are you sure you want to delete this?')" href="{{ url('delete_category', $data->id) }}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
+                      <td><a onclick="confirmation(event)" href="{{ url('admin/delete_category', $data->id) }}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
                     </tr>
                         @endforeach
                   </tbody>

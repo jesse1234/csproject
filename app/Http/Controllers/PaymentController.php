@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\StkRequest;
 use App\Models\Transaction;
 use App\Models\Payment;
-use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderItems;
+use App\Models\Product;
+use App\Models\Cart;
 use App\Models\User;
 use Str;
 use Session;
@@ -56,7 +58,7 @@ class PaymentController extends Controller
         $PartyA=$phoneNumber;
         $PartyB=174379;
         $PhoneNumber=$phoneNumber;
-        $CallbackUrl='https://6002-105-163-1-141.ngrok-free.app/payments/stkcallback';
+        $CallbackUrl='https://7761-105-163-2-51.ngrok-free.app/payments/stkcallback';
         $AccountReference='Artifact Inc.';
         $TransactionDesc= 'Artifact Inc.';
         
@@ -104,8 +106,60 @@ class PaymentController extends Controller
 
     }
 
-    Cart::where('user_id', $user->id)->delete();
-        return redirect()->back()->with('success', 'Order made successfully');
+    $carts = Cart::where('user_id',Auth::id())->get();
+
+    foreach($carts as $carts)
+    {
+        $order = new Order;
+        $order->name = $request->input('name');
+        $order->phone = $request->input('phone');
+        $order->email = $request->input('email');
+        $order->address = $request->input('address');
+        $order->region = $request->input('region');
+        $order->state = $request->input('state');
+        $order->zip_code = $request->input('zip_code');
+        $order->product_id = $carts->product_id;
+        $order->user_id = Auth::id();
+        $order->total_price = $totalprice;
+        $order->save();
+       
+    }
+   
+
+    $order->id;
+    $cartItems = Cart::where('user_id',Auth::id())->get();
+    foreach($cartItems as $item)
+    {
+        OrderItems::create([
+            'order_id' => $order->id,
+            'product_id' => $item->product_id,
+            'quantity' => $item->quantity,
+            'price' => $item->products->discount_price ?? $item->products->price,
+        ]);
+
+        $prod = Product::where('id',$item->product_id)->first();
+        $prod->stock = $prod->stock - $item->quantity;
+        $prod->update();
+    }
+
+    if(Auth::user()->address == null)
+    {
+        $user = User::where('id',Auth::id())->first();
+        $user->name = $request->input('name');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
+        $user->region = $request->input('region');
+        $user->state = $request->input('state');
+        $user->zip_code = $request->input('zip_code');
+        $user->update();
+    }
+
+    $cartItems = Cart::where('user_id',Auth::id())->get();
+    Cart::destroy($cartItems);
+    return redirect()->back()->with('success','Order placed successfully');
+
+
+
     }
 
     public function stkCallback()

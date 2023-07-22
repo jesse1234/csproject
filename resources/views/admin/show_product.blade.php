@@ -18,6 +18,8 @@
         height:250px;
     }
   </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -26,7 +28,7 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
   </div>
-
+  @include('sweetalert::alert')
   <!-- Navbar -->
   @include('admin.navbar')
   <!-- /.navbar -->
@@ -69,7 +71,7 @@
                       <td>{{$product->title}}</td>
                       <td>{{$product->description}}</td>
                       <td>
-                        <img class = 'img-size' src="product/{{$product->image}}" alt="">
+                        <img class = 'img-size' src="product/{{$product->image}}" alt="" style='width:100px; height:100px;'>
                       </td>
                       <td>{{$product->image_3d}}</td>
                       <td>{{$product->category_id}}</td>
@@ -77,7 +79,7 @@
                       <td>{{$product->price}}</td>
                       <td>{{$product->discount_price}}</td>
                       <td><a href="{{ url('/update_product',$product->id) }}"><button type='button' class='btn btn-block btn-info tn-sm'>Edit</button></a></td>
-                      <td><a onclick = "return confirm('Are you sure you want to delete this?')" href="{{ url('/delete_product',$product->id) }}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
+                      <td><a onclick= "confirmation(event)"  href="{{ url('/delete_product',$product->id) }}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
                     </tr>
                        @endforeach 
                   </tbody>

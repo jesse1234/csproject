@@ -27,7 +27,7 @@
     @endif
 <div class="wrapper">
 
-
+$include('sweetalert::alert')
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
@@ -90,6 +90,14 @@
                                     <form action="{{ route('vendors.approve', $vendors->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary">Approve</button>
+                                    </form>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($vendors->status === 'Pending')
+                                    <form action="{{ route('vendors.reject', $vendors->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-secondary">Reject</button>
                                     </form>
                                 @endif
                             </td>

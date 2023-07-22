@@ -77,8 +77,8 @@
                     <label for="3d_image">3D Image</label>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="_3d_image">
-                        <label class="custom-file-label" for="_3d_image">Choose file</label>
+                        <input type="file" class="custom-file-input" name="image_3d">
+                        <label class="custom-file-label" for="image_3d">Choose file</label>
                       </div>
                       <div class="input-group-append">
                         <span class="input-group-text">Upload</span>
@@ -93,7 +93,7 @@
 
                   <div class="form-group">
                     <label for="quantity">Quantity</label>
-                    <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" min='0'>
+                    <input type="number" class="form-control" name="stock" placeholder="Enter Quantity" min='0'>
                   </div>
 
                   <div class="form-group">
@@ -116,40 +116,8 @@
 
   </div>
 
-  <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Title</th>
-                      <th>Description</th>
-                      <th>Product Image</th>
-                      <th>3D Image</th>
-                      <th>Category ID</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
-                      <th>Discount Price</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                        
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td><a href=""><button type='button' class='btn btn-block btn-info tn-sm'>Edit</button></a></td>
-                      <td><a onclick = "" href="{{}}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
-                    </tr>
-                        
-                  </tbody>
-                </table>
+
+                
               </div>
   <!-- /.content-wrapper -->
   @include('admin.footer')

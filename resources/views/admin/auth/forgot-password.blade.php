@@ -4,8 +4,8 @@
     <div class="login-page">
         <div class="login-box">
             <div class="login-logo">
-                <a href="../../index2.html"><b>Admin</b>LTE</a>
-                <h6>Admin Forgot password</h6>
+                <a href="../../index2.html"><b>Venor</b>LTE</a>
+                <h6>Vendor Forgot password</h6>
             </div>
             <!-- /.login-logo -->
             <div class="card">
@@ -18,7 +18,7 @@
                     @if (session('status'))
                         {{ session('status') }}
                     @endif
-                    <form action="{{ route('admin.password.email') }}" method="post">
+                    <form action="{{ route('admin.password.link') }}" method="post">
                         @csrf
                         <div class="input-group mb-3">
                             <input type="email" class="form-control" placeholder="Email" name="email">

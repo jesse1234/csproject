@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Models\OrderItems;
 
 
 class Order extends Model
@@ -16,8 +17,13 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product()
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class,'product_id','id');
+    }
+
+    public function orderitems()
+    {
+       return $this->hasMany(OrderItems::class); 
     }
 }

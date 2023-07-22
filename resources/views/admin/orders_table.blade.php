@@ -26,7 +26,7 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
   </div>
-
+  @include('sweetalert::alert')
   <!-- Navbar -->
   @include('admin.navbar')
   <!-- /.navbar -->
@@ -81,16 +81,16 @@
                       <td>{{$order->address}}</td>
                       <td>{{$order->region}}</td>
                       <td>
-                        <img class = 'img-size' src="product/{{$order->image}}" alt="" >
+                        <img class = 'img-size' src="product/{{$order->products->image}}" alt="" >
                       </td>
-                      <td>{{$order->product_title}}</td>
-                      <td>{{$order->price}}</td>
+                      <td>{{$order->products->title}}</td>
+                      <td>{{$order->total_price}}</td>
                       <td>{{$order->delivery_status}}</td>
                       
                      
                       <td>
                       @if($order->delivery_status == 'pending')  
-                      <a href="{{ url('delivered',$order->id) }}" onclick = "return confirm('Are you sure this product has been delivered?')"><button type='button' class='btn btn-block btn-info tn-sm'>Delivered</button></a>
+                      <a href="{{ url('delivered',$order->id) }}" onclick="confirmation(event)"><button type='button' class='btn btn-block btn-info tn-sm'>Delivered</button></a>
                       @else
 
                     <p style='color:green;'>Delivered</p>
@@ -106,7 +106,7 @@
                     </td>
                     </td>
                       
-                      <td><a onclick = "return confirm('Are you sure you want to delete this?')" href="{{ url('/delete_product',$order->id) }}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
+                      <td><a onclick="confirmation(event)" href="{{ url('/delete_order',$order->id) }}"><button type='button' class='btn btn-block btn-danger tn-sm'>Delete</button></a></td>
                     </tr>
                        @endforeach 
                   </tbody>

@@ -36,7 +36,7 @@
     </div>
     @endif
 
-      <form action="{{route('password.link')}}" method="post">
+      <form action="{{route('admin.password.link')}}" method="post">
         @csrf
         
         <div class="input-group mb-3">

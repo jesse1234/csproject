@@ -41,15 +41,17 @@ class EmailNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->greeting($this->details['greeting'])
-                    ->line($this->details['firstline'])
-                    ->line($this->details['body'])
-                    ->line($this->details['file'])
-                    ->action($this->details['button'], $this->details['url'])
-                    ->line($this->details['lastline']);
-    }
+{
+    $file = $this->details['file']; // Path to the file attachment
+
+    return (new MailMessage)
+        ->greeting($this->details['greeting'])
+        ->line($this->details['firstline'])
+        ->line($this->details['body'])
+        ->action($this->details['button'], $this->details['url'])
+        ->line($this->details['lastline'])
+        ->attach($file); // Attach the file to the email
+}
 
     /**
      * Get the array representation of the notification.

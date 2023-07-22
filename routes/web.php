@@ -10,9 +10,11 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MpesaController;
+use App\Http\Controllers\M_PesaController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +49,7 @@ Route::get('/welcome', [HomeController::class,'welcome']);
 // });
 
 Route::get('/stk/push/simulation',[MpesaController::class,'stkPushSimulation']);
-Route::post('/transaction/new/{totalprice}/{user_id}', [MpesaController::class, 'stkSimulation'])->name('checkout.pay')->middleware('auth');
+Route::post('/transaction/new/{totalprice}/{user_id}', [M_PesaController::class, 'stkSimulation'])->name('checkout.pay')->middleware('auth');
 
 
 //Super Admin route
@@ -64,12 +66,25 @@ Route::prefix('superadmin')->group(function(){
     Route::post('/password/forgot', [SuperAdminController::class,'resetPassword'])->name('reset.password');
     Route::get('/vendor_approve', [SuperAdminController::class,'vendor_approve'])->name('vendor.approve');
     Route::post('vendors/approve/{id}', [SuperAdminController::class,'approve'])->name('vendors.approve');
+    Route::post('vendors/reject/{id}', [SuperAdminController::class,'reject'])->name('vendors.reject');
 
     Route::get('/user_chart',[SuperAdminController::class,'user_chart']);
 });
 
 
     Route::get('/admin/vendor_details', [AdminController::class,'vendor_details']);
+    Route::get('/admin/categories', [AdminController::class,'view_category']);
+    Route::post('/admin/add_category', [AdminController::class,'add_category']);
+
+    Route::get('/admin/delete_category/{id}', [AdminController::class,'delete_category']);
+    Route::get('/delete_order/{id}', [AdminController::class,'delete_order']);
+
+    Route::post('/admin/password/forgot/link', [AdminController::class,'sendResetLink'])->name('admin.password.link');
+    Route::get('/admin/password/forgot/{token}', [AdminController::class,'showResetForm'])->name('admin.reset.password.form');
+    Route::post('/admin/password/forgot', [AdminController::class,'resetPassword'])->name('admin.reset.password');
+    Route::get('/admin/forgot/form', [AdminController::class,'showForgotForm'])->name('redo.password');
+    
+
 
     Route::get('/admin/vendor_charts', [AdminController::class,'vendor_chart'])->name('admin.charts');
     
@@ -81,7 +96,10 @@ Route::prefix('superadmin')->group(function(){
     Route::get('/delete_product/{id}',[AdminController::class,'delete_product']);
     Route::get('/update_product/{id}',[AdminController::class,'update_product']);
     Route::post('/update_product_confirm/{id}',[AdminController::class,'update_product_confirm']);
-    
+    Route::get('/admin/transactions',[AdminController::class,'transactions_table'])->name('admin.transactions');
+    Route::get('/admin/stk_request',[AdminController::class,'stk_table'])->name('admin.stk');
+
+
     Route::get('/show_orders',[AdminController::class,'show_order_table']);
     Route::get('/delivered/{id}', [AdminController::class,'delivered']);
     Route::get('/print_pdf/{id}', [AdminController::class,'print_pdf']);
@@ -96,12 +114,26 @@ Route::prefix('superadmin')->group(function(){
     Route::get('/product_search',[HomeController::class,'product_search']);
     Route::get('/products',[HomeController::class,'product']);
     Route::get('/search_product',[HomeController::class,'search_product']);
+    Route::get('/get-order',[HomeController::class,'get_order']);
+    Route::get('/view-order/{id}',[HomeController::class,'view_order']);
+    Route::get('/load-cart-data',[CartController::class,'cartcount']);
 
+
+
+   // Route::post('/transaction/new/{cart_total}/{user_id}', [PaymentController::class, 'stkSimulation'])->name('cart.pay');
+   Route::get('/initiate_payment', [M_PesaController::class, 'stk_simulation']);
+
+    Route::post('/add_to_cart_table',[CartController::class,'addProduct']);
+    Route::get('/cart_table',[CartController::class,'viewcart'])->name('cart_table');
+    Route::post('/update-cart',[CartController::class,'updatecart']);
+    Route::get('/checkout_details/{totalprice}',[CheckoutController::class,'checkoutindex']);
+    Route::post('/place-order/{totalprice}', [CheckoutController::class, 'place_order']);
 
     Route::post('/add_to_cart/{id}', [HomeController::class, 'add_to_cart'])->name('add_to_cart');
     Route::get('cart', [HomeController::class, 'cart'])->name('cart');
     Route::get('/remove_cart/{id}', [HomeController::class, 'remove_cart']);
     Route::post('/update_cart', [HomeController::class, 'updateCart'])->name('cart.update');
+    Route::post('/add_product',[AdminController::class,'add_product']);
 
     Route::post('/checkout/{totalprice}', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/checkout/{totalprice}', [CheckoutController::class, 'checkout_page'])->name('checkout.submit');
@@ -113,7 +145,7 @@ Route::prefix('superadmin')->group(function(){
     Route::get('/initiatepush','initiateStkPush')->name('initiatepush');
     Route::post('/stkcallback','stkCallback')->name('stkcallback');
     Route::get('/stkquery','stkQuery')->name('stkquery');
-    Route::post('/mpesa/initiate/{totalprice}/{user_id}', [PaymentController::class, 'initiateStkPush'])->name('mpesa.initiate');
+    Route::post('/mpesa/initiate/{totalprice}/{user_id}', [PaymentController::class, 'initiateStkPush'])->name('cart.pay');
 
  });
 

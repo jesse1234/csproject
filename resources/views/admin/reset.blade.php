@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Admin</b>LTE</a>
+    <a href=""><b>Vendor</b>LTE</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -36,7 +36,7 @@
     </div>
     @endif
 
-      <form action="{{route('reset.password')}}" method="post">
+      <form action="{{route('admin.reset.password')}}" method="post">
         @csrf
         <input type="hidden" name = 'token' value = '{{$token}}'>
         <div class="input-group mb-3">

@@ -45,6 +45,7 @@
                                 </div>
                             </div>
                         </div>
+                    
                         <div class="input-group mb-3">
                             <input type="password" class="form-control" placeholder="Confirm Password"
                                 name="confirmation_at">
@@ -85,3 +86,5 @@
         </div>
     </div>
 @stop
+
+

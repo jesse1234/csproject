@@ -1,6 +1,15 @@
 @extends('layouts.admin_app')
 
 @section('app_content')
+
+@if(session()->has('message'))
+
+<div class='alert alert-success'>
+    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>x</button>
+    {{session()->get('message')}}
+</div>
+@endif
+
     <div class="login-page">
         <div class="login-box">
             <div class="login-logo">
@@ -56,11 +65,21 @@
                     
                     <!-- /.social-auth-links -->
 
-                    <p class="mb-1">
-                        <a href="forgot-password.html">I forgot my password</a>
-                    </p>
+                    
                     <p class="mb-0">
                         <a href="{{route('admin.register')}}" class="text-center">Register a new membership</a>
+                    </p>
+
+                    <p class="mb-0">
+                        <a href="{{route('redo.password')}}" class="text-center">Forgot Password</a>
+                    </p>
+
+                    <p class="mb-0">
+                        <a href="{{route('login')}}" class="text-center">Are you a user? Login Here!</a>
+                    </p>
+
+                    <p class="mb-0">
+                        <a href="{{url('/superadmin/login')}}" class="text-center">Are you an admin? Login Here!</a>
                     </p>
                 </div>
                 <!-- /.login-card-body -->

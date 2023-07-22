@@ -9,8 +9,10 @@ use Carbon\Carbon;
 use App\Models\Vendor;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\SuperAdmin;
 use App\Models\Product;
 use App\Charts\VendorChart;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SuperAdminController extends Controller
 {
@@ -21,9 +23,23 @@ class SuperAdminController extends Controller
 
     public function dashboard()
     {
-        $user_count = User::all()->count();
+        $total_product= Product::all()->count();
+            $total_user= User::all()->count();
+            $total_order= Order::all()->count();
+            $order = Order::all();
+    
+            $total_revenue=0;
+    
+            foreach($order as $order)
+            {
+                $total_revenue=$total_revenue + $order->total_price;
+            }
+    
+            $total_delivered=Order::where('delivery_status', '=', 'delivered')->get()->count();
+            $total_pending=Order::where('delivery_status', '=', 'pending')->get()->count();
+        
     $vendor_count = Vendor::all()->count();
-        return view('superadmin.admin_dashboard',compact('user_count','vendor_count'));
+        return view('superadmin.admin_dashboard',compact('vendor_count','total_product','total_user','total_order','total_revenue','total_delivered','total_pending'));
     }
 
     public function login(Request $request)
@@ -106,7 +122,7 @@ class SuperAdminController extends Controller
             return back()->withInput()->with('fail', 'Invalid token');
         }
         else{
-            Admin::where('email',$request->email)->update([
+            SuperAdmin::where('email',$request->email)->update([
                 'password' => \Hash::make($request->password)
             ]);
 
@@ -121,24 +137,43 @@ class SuperAdminController extends Controller
     public function vendor_approve()
     {
         $vendors = Vendor::all();
-        $user_count = User::all()->count();
+        $total_user= User::all()->count();
     $vendor_count = Vendor::all()->count();
-        return view('superadmin.vendor_table', compact('vendors','vendor_count','user_count'));
+        return view('superadmin.vendor_table', compact('vendors','vendor_count','total_user'));
     }
 
     public function approve($id)
 {
     $vendor = Vendor::findOrFail($id);
-    $vendor->status = 'Approved';
+    $vendor->status = 'approved';
     $vendor->save();
 
     // Optionally, you can send a notification to the vendor here.
-
+    Alert::success('Vendor has been approved');
     return redirect()->back()->with('success', 'Vendor approved successfully.');
+}
+
+public function reject($id)
+{
+    $vendor = Vendor::findOrFail($id);
+    $vendor->status = 'Rejected';
+    $vendor->save();
+
+    Alert::warning('Are you sure you want to reject this vendor');
+
+
+    // Optionally, you can send a notification to the vendor here.
+
+    return redirect()->back()->with('success', 'Vendor rejected successfully.');
 }
 
 public function user_chart(Request $request)
 {
+   
+            $total_user= User::all()->count();
+            $total_order= Order::all()->count();
+
+
     $user_count = User::all()->count();
     $vendor_count = Vendor::all()->count();
 
@@ -161,11 +196,16 @@ public function user_chart(Request $request)
         return count($item);
     })->toArray();
 
+    $rejectedCount = Vendor::where('status', 'Rejected')->pluck('id', 'created_at')->groupBy('created_at')->map(function ($item) {
+        return count($item);
+    })->toArray();
+
     $status_chart = new VendorChart;
     $status_chart->labels(array_keys($approvedCount));
 
     $status_chart->dataset('Approved', 'bar', array_values($approvedCount))->color('green');
     $status_chart->dataset('Pending', 'bar', array_values($pendingCount))->color('orange');
+    $status_chart->dataset('Rejected', 'bar', array_values($rejectedCount))->color('blue');
     
     $total_vendors = Vendor::pluck('id', 'created_at')->groupBy('created_at')->map(function ($item) {
         return count($item);
@@ -190,15 +230,15 @@ public function user_chart(Request $request)
     $discount_chart->labels($discount_product->keys());
     $discount_chart->dataset('Product discount prices','bar',$discount_product->values())->color('orange');
 
-    return view('superadmin.vendor_chart',compact('chart','user_chart','status_chart','total_chart','product_chart','discount_chart','user_count','vendor_count'));
+    return view('superadmin.vendor_chart',compact('chart','user_chart','status_chart','total_chart','product_chart','discount_chart','user_count','vendor_count','total_user'));
 }
 
 public function show_users_table()
 {
     $user = User::all();
-    $user_count = User::all()->count();
+    $total_user = User::all()->count();
     $vendor_count = Vendor::all()->count();
-    return view('superadmin.users_table',compact('user','user_count','vendor_count'));
+    return view('superadmin.users_table',compact('user','user_count','total_user'));
 }
 
 

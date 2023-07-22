@@ -11,6 +11,7 @@
       <meta name="keywords" content="" />
       <meta name="description" content="" />
       <meta name="author" content="" />
+      <meta name="csrf-token" content="{{ csrf_token() }}">
       <link rel="shortcut icon" href="images/favicon.png" type="">
       <title>Famms - Fashion HTML Template</title>
       <!-- bootstrap core css -->
@@ -25,6 +26,22 @@
     <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
 </head>
 <body>
+@include('sweetalert::alert')
+@if(session()->has('info'))
+
+<div class='alert alert-danger'>
+    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>x</button>
+    {{session()->get('info')}}
+</div>
+@endif
+
+@if(session()->has('success'))
+
+<div class='alert alert-danger'>
+    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>x</button>
+    {{session()->get('success')}}
+</div>
+@endif
 
 
          <!-- header section strats -->
@@ -43,14 +60,22 @@
  <div class="right-column">
 
    <!-- Product Description -->
-   <div class="product-description">
+   <div class="product-description product_data">
      <span>Product Details</span>
      <h1>{{$product->title}}</h1>
      <br>
      <p>{{$product->description}}</p>
      <br>
-     <p>Stock: {{$product->stock}}</p>
-</div>
+     @if($product->stock >0)
+      <label class='badge bg-success' style='color:white;'>In stock</label>
+     @else
+      <label class="badge bg-danger" style='color:white;'>Out Of Stock</label>
+   
+     @endif
+     <br>
+     <p>Available Quantity: {{$product->stock}}</p>
+     
+
 
      
 
@@ -66,19 +91,78 @@
                         
                         <span>Kes. {{$product->price}}</span>
                      @endif
-     <a href="#" class="cart-btn">Add to cart</a>
+
+         
    </div>
+   <br>
+   
+                              <div class='row mt-2'>
+                                 <div class='col-md-2'>
+                                    <div class='input-group text-center mb-3'>
+                                    <input type="hidden" value='{{$product->id}}' class='prod_id'>
+                                       <label for="quantity">Quantity</label>
+                                       <span class=''>-</span>
+                                       <input type="number" name='quantity' value='1' min=1 max='10' class='form-control qty-input text-center' style='width:50px;'>
+                    
+
+                                    </div>
+                                    <br>
+                                    @if($product->stock >0)
+                                    <input type="submit" value='Add to Cart' class='btn btn-outline-success me-3 addToCartBtn float-start'>
+                                 @else
+                                    
+                                    </div>
+                                 @endif
+                                 
+                              </div>
+                              </div>
+                 
  </div>
 </main>
 
       
+    <!-- jQery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.addToCartBtn').click(function(e) {
+            e.preventDefault();
+
+            var product_id = $(this).closest('.product_data').find('.prod_id').val();
+            var product_qty = $(this).closest('.product_data').find('.qty-input').val();
+
+            $.ajaxSetup({
+               headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+            });
+            // Send an AJAX request to add the product to the cart
+            $.ajax({
+                url: '{{ url("add_to_cart_table") }}',
+                method: 'POST',
+                data: {
+                    'product_id': product_id,
+                    'product_qty': product_qty,
+                },
+                success: function (response)
+                {
+                  alert(response.status)
+                }
+            });
+           
+            });
+        
+        
+        });
+</script>
       <!-- jQery -->
-      <script src="home/js/jquery-3.4.1.min.js"></script>
+      <!-- jQery -->
+      <script src="{{asset('home/js/jquery-3.4.1.min.js')}}"></script>
       <!-- popper js -->
-      <script src="home/js/popper.min.js"></script>
+      <script src="{{asset('home/js/popper.min.js')}}"></script>
       <!-- bootstrap js -->
-      <script src="home/js/bootstrap.js"></script>
+      <script src="{{asset('home/js/bootstrap.js')}}"></script>
       <!-- custom js -->
-      <script src="home/js/custom.js"></script>
+      <script src="{{asset('home/js/custom.js')}}"></script>
    </body>
 </html>
